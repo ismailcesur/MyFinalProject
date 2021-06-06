@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -22,38 +23,44 @@ namespace Business.Concrete
 
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length<2)
+            if (product.ProductName.Length < 2)
             {
-                return new ErrorResult("Ürün adı en az 2 karakter olmalı");
+                //magic string
+                return new ErrorResult(Messages.ProductNameInvalid);
             }
             _productDal.Add(product);
             return new Result(true, "Ürün eklendi.");
         }
 
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
+            if (DateTime.Now.Hour == 17)
+            {
+                return new ErrorResult();
+            }
             //İş kodları
-            return _productDal.GetAll();
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), true, "Ürünler listelendi");
+
 
         }
 
-        public List<Product> GetAllByCategoryId(int categoryId)
+        public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
         {
             return _productDal.GetAll(p => p.CategoryId == categoryId);
 
         }
 
-        public Product GetById(int productId)
+        public IDataResult<Product> GetById(int productId)
         {
             return _productDal.Get(p => p.ProductId == productId);
         }
 
-        public List<Product> GetByUnitPrice(decimal min, decimal max)
+        public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
         {
             return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
             return _productDal.GetProductDetails();
         }

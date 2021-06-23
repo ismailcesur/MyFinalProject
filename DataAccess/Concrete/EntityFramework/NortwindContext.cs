@@ -11,11 +11,11 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-B3ADN4C\SQLEXPRESS;Database=NORTHWND;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-B3ADN4C\SQLEXPRESS;Database=BakirliTic;Trusted_Connection=True");
         }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; } 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Personel> Personels { get; set; }
         public DbSet<Order> Orders { get; set; }
